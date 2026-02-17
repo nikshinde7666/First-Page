@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Login Form</title>
+
+<style>
+/* ====== Page Style ====== */
+body{
+    margin:0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg,#fffffff0,#4295b1,#ffffff);
+    border: rgb(149, 149, 217);
+    height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+/* ====== Form Box ====== */
+.login-box{
+    background:#fffefe;
+    padding:30px;
+    width:320px;
+    border-radius:10px;
+    box-shadow:0 0 20px rgba(227, 7, 7, 0.3);
+}
+
+.login-box h2{
+    text-align:center;
+    margin-bottom:20px;
+}
+
+/* ====== Input Fields ====== */
+.input-group{
+    margin-bottom:15px;
+}
+
+.input-group label{
+    font-weight:bold;
+    display:block;
+    margin-bottom:5px;
+}
+
+.input-group input{
+    width:100%;
+    padding:10px;
+    border:1px solid #ccc;
+    border-radius:5px;
+}
+
+/* ====== Remember Me ====== */
+.remember{
+    display:flex;
+    align-items:center;
+    margin-bottom:15px;
+}
+
+.remember input{
+    margin-right:8px;
+}
+
+/* ====== Button ====== */
+button{
+    width:100%;
+    padding:12px;
+    border:rgb(218, 50, 50);
+    border-radius:5px;
+    background:#3ebcdb;
+    color:#fff;
+    font-size:16px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#5fa0b5;
+}
+
+/* ====== Message ====== */
+#msg{
+    margin-top:10px;
+    text-align:center;
+    font-weight:bold;
+}
+.footer{
+    text-align:center;
+    margin-top:15px;
+    font-size:14px;
+    cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div class="login-box">
+    <h2>Login Form</h2>
+
+    <form id="loginForm">
+
+        <div class="input-group">
+            <label>Username</label>
+            <input type="text" id="username" placeholder="Enter username" required>
+        </div>
+
+        <div class="input-group">
+            <label>Password</label>
+            <input type="password" id="password" placeholder="Enter password" required>
+        </div>
+
+        <div class="remember">
+            <input type="checkbox" id="remember">
+            <label for="remember">Remember Me</label>
+        </div>
+
+        <button type="submit">Login</button>
+
+        <div id="msg"></div>
+
+    </form>
+    <div class="footer">
+        Not a member? Sign-up
+    </div>
+</div>
+</div>
+
+<script>
+// ====== Demo User (Database Simulation) ======
+const demoUser = {
+    username: "admin",
+    password: "12345"
+};
+
+// ====== Form Submit ======
+document.getElementById("loginForm").addEventListener("submit", function(e){
+    e.preventDefault();
+
+    const user = document.getElementById("username").value.trim();
+    const pass = document.getElementById("password").value.trim();
+    const remember = document.getElementById("remember").checked;
+    const msg = document.getElementById("msg");
+
+    // ===== Validation =====
+    if(user === "" || pass === ""){
+        msg.style.color = "red";
+        msg.textContent = "Please fill all fields!";
+        return;
+    }
+
+    // ===== Authentication =====
+    if(user === demoUser.username && pass === demoUser.password){
+
+        msg.style.color = "green";
+        msg.textContent = "Login Successful ✅";
+
+        // ===== Remember Me Feature =====
+        if(remember){
+            localStorage.setItem("savedUser", user);
+        }else{
+            localStorage.removeItem("savedUser");
+        }
+
+    }else{
+        msg.style.color = "red";
+        msg.textContent = "Invalid Username or Password ❌";
+    }
+});
+
+// ===== Auto Fill if Remembered =====
+window.onload = function(){
+    const saved = localStorage.getItem("savedUser");
+    if(saved){
+        document.getElementById("username").value = saved;
+        document.getElementById("remember").checked = true;
+    }
+};
+</script>
+
+</body>
+</html>
